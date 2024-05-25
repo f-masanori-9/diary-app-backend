@@ -1,0 +1,34 @@
+{
+  "name": "app-dev",
+  "dockerComposeFile": ["./docker-compose.yml"],
+  "service": "app",
+  "extensions": ["golang.go"],
+  "customizations": {
+    // カスタマイズ
+    "vscode": {
+      "extensions": ["GitHub.copilot"],
+      "settings": {}
+    }
+  },
+  "workspaceFolder": "/go/src",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "go.toolsManagement.checkForUpdates": "off",
+    "go.gopath": "/go",
+    "go.gocodeAutoBuild": true,
+    "go.formatTool": "gofmt",
+    "go.useLanguageServer": true,
+    "editor.formatOnSave": true,
+    "[go]": {
+      "editor.defaultFormatter": "golang.go",
+      "editor.formatOnSave": true
+    },
+    "[go.mod]": {
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    "go.vetOnSave": "package"
+  }
+}
