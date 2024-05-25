@@ -1,0 +1,36 @@
+version: "3"
+services:
+  app:
+    container_name: go-api-dev-container
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    tty: true
+    volumes:
+      - ../src:/go/src
+      - ./.air.toml:/go/src/.air.toml
+    ports:
+      - 8888:${API_PORT}
+    environment:
+      - GOPATH=/go
+      - API_PORT=${API_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+  postgres:
+    image: postgres:14
+    container_name: postgres-dev-container-for-diary-app
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: "Asia/Tokyo"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - 60001:5432
+    volumes:
+      - ./pg-db-store:/var/lib/postgresql/data
+    healthcheck: # コンテナの起動チェック
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      retries: 3
